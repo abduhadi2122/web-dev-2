@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Create a new topic</h1>
+
+    <form method="post">
+        <input type="hidden" name="csrf" value="{{ csrf_token }}">
+        <input type="text" name="title" placeholder="Topic title" required> <br>
+        <textarea name="text" rows="5" required></textarea> <br>
+        <button>Submit</button>
+    </form>
+
+</body>
+</html>

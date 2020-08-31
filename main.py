@@ -1,30 +1,31 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, make_response
+
+from handlers.auth import auth_handlers
+from handlers.topic import topic_handlers
+from handlers.comment import comment_handlers
+
+from models.settings import db
+from models.user import User
+from models.topic import Topic
+
+import hashlib
+import uuid
+import os
+import smartninja_redis
+
+redis = smartninja_redis.from_url(os.environ.get("REDIS_URL"))
 
 app = Flask(__name__)
+app.register_blueprint(auth_handlers)
+app.register_blueprint(topic_handlers)
+app.register_blueprint(comment_handlers)
 
-# handler 1
-@app.route('/', methods=["GET", "POST"])
-def hello_world():
-    if request.method == "GET":
-        return render_template("index.html")
-
-    elif request.method == "POST":
-        name = request.form.get("your-name")
-        return f"Hello {name}! :)"
+db.create_all()
 
 
-# handler 2
-@app.route("/second-handler")
-def second_handler():
-    return "Here's is the second handler"
 
 
-# handler 3
-@app.route('/about')
-def about():
-    return 'Something about me'
 
 
-# this is just a regular way how to run some Python file safely
 if __name__ == '__main__':
     app.run()
